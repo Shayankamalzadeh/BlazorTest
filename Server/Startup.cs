@@ -28,7 +28,7 @@ namespace BlazorTest.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
             var connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<AppDbContext>(option => option.UseSqlServer());
+            services.AddDbContext<AppDbContext>(option => option.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
