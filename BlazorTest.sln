@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorTest.Server", "Server\BlazorTest.Server.csproj", "{11D6ECC5-DEAA-4E2F-BD28-2B6EDC4ABE99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTest.Server", "Server\BlazorTest.Server.csproj", "{11D6ECC5-DEAA-4E2F-BD28-2B6EDC4ABE99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorTest.Client", "Client\BlazorTest.Client.csproj", "{275045EA-A50D-4226-89B8-8180388CA2B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTest.Client", "Client\BlazorTest.Client.csproj", "{275045EA-A50D-4226-89B8-8180388CA2B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorTest.Shared", "Shared\BlazorTest.Shared.csproj", "{9650AADB-A7BA-4A4B-905A-8785FB1A73EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTest.Shared", "Shared\BlazorTest.Shared.csproj", "{9650AADB-A7BA-4A4B-905A-8785FB1A73EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

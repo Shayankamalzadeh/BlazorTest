@@ -1,0 +1,44 @@
+﻿@page "/user"
+@using BlazorTest.Shared
+@inject IUserService  UserService
+<h3>User</h3>
+@if (Users.Count == 0)
+{
+    <span>Loading Data...</span>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Family</th>
+                <th>Email</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Users)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.LastName</td>
+                    <td>@item.Email</td>
+                    <td>@item.Role.Caption</td>
+
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<BlazorTest.Shared.Entities.User> Users = new List<BlazorTest.Shared.Entities.User>();
+    protected override async Task OnInitializedAsync()
+    {
+
+        Users = await UserService.GetUsers();
+
+    }
+}
