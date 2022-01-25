@@ -19,6 +19,12 @@ namespace BlazorTest.Server.Controllers
             new Role{Id=1,Caption="Admin"},
             new Role{Id=2,Caption="User"}
         };
+
+        List<User> users = new List<User> {
+            new User {Id=1, Name = "Shayan", LastName = "Kamalzadeh", Email = "Shayankamalzadeh@gmail.com", Role = roles[0] } ,
+            new User {Id=2, Name = "Andrie", LastName = "xxxx", Email = "xxxx@gmail.com", Role = roles[1] },
+            new User {Id=3, Name = "Pooria", LastName = "Yyyy", Email = "YYYY@gmail.com", Role = roles[0] }
+        };
         private readonly ILogger<UserController> _logger;
 
         public UserController(ILogger<UserController> logger)
@@ -27,17 +33,15 @@ namespace BlazorTest.Server.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<User> Get()
+        public async Task<IActionResult> GetUser()
         {
-
-
-            List<User> users = new List<User>();
-            users.Add(new User { Name = "Shayan", LastName = "Kamalzadeh", Email = "Shayankamalzadeh@gmail.com", Role = roles[0] });
-            users.Add(new User { Name = "Andrie", LastName = "xxxx", Email = "xxxx@gmail.com", Role = roles[1] });
-            users.Add(new User { Name = "Pooria", LastName = "Yyyy", Email = "YYYY@gmail.com", Role = roles[0] });
-
-            return users;
+            return Ok(users);
         }
-
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Getdetail(int id)
+        {
+            var user = users.FirstOrDefault(x => x.Id == id);
+            return Ok(user);
+        }
     }
 }

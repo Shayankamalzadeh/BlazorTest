@@ -1,8 +1,9 @@
 ﻿@page "/user"
 @using BlazorTest.Shared
 @inject IUserService  UserService
+@inject NavigationManager Navigation
 <h3>User</h3>
-@if (Users.Count == 0)
+@if (UserList.Count == 0)
 {
     <span>Loading Data...</span>
 }
@@ -15,16 +16,20 @@ else
                 <th>Family</th>
                 <th>Email</th>
                 <th>Role</th>
+
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Users)
+            @foreach (var item in UserList)
             {
                 <tr>
                     <td>@item.Name</td>
                     <td>@item.LastName</td>
                     <td>@item.Email</td>
                     <td>@item.Role.Caption</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="(()=>showUser(item.Id))">Show</button>
+                    </td>
 
                 </tr>
 
@@ -34,11 +39,16 @@ else
 }
 
 @code {
-    List<BlazorTest.Shared.Entities.User> Users = new List<BlazorTest.Shared.Entities.User>();
+    List<BlazorTest.Shared.Entities.User> UserList = new List<BlazorTest.Shared.Entities.User>();
     protected override async Task OnInitializedAsync()
     {
 
-        Users = await UserService.GetUsers();
+        UserList = await UserService.GetUsers();
 
+    }
+    void showUser(int id)
+    {
+
+        Navigation.NavigateTo($"user/{id}");
     }
 }

@@ -16,6 +16,11 @@ namespace BlazorTest.Client.Services
             this.httpClient = httpClient;
         }
 
+        public async Task<User> GetUserDetail(int id)
+        {
+            return await httpClient.GetFromJsonAsync<User>($"api/user/{id}");
+        }
+
         public async Task<List<User>> GetUsers()
         {
             return await httpClient.GetFromJsonAsync<List<User>>("api/user");

@@ -1,0 +1,25 @@
+﻿@page "/user/{id:int}"
+@inject IUserService userService
+<h3>UserDetail</h3>
+@if (userdetail is null)
+{
+    <span>can not find data!</span>
+}
+else
+{
+    <span>@userdetail.Name</span>
+    <span>@userdetail.LastName</span>}
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    BlazorTest.Shared.Entities.User userdetail = new BlazorTest.Shared.Entities.User();
+
+    protected override async Task OnInitializedAsync()
+    {
+        userdetail = await userService.GetUserDetail(Id);
+
+    }
+}

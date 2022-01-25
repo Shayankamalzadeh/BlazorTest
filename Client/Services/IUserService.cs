@@ -9,5 +9,6 @@ namespace BlazorTest.Client.Services
     public interface IUserService
     {
         public Task<List<User>> GetUsers();
+        public Task<User> GetUserDetail(int id);
     }
 }
