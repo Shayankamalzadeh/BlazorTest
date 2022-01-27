@@ -1,0 +1,58 @@
+﻿@inject IUserService UserService
+@inject IJSRuntime Jsrun
+<h3>EditUser</h3>
+
+<EditForm Model="User" OnSubmit="Submited">
+    <div class="form-group">
+        <label>First Name</label>
+        <InputText @bind-Value="User.Name" class="form-control"></InputText>
+    </div>
+
+    <div class="form-group">
+        <label>Last Name</label>
+        <InputText @bind-Value="User.LastName" class="form-control"></InputText>
+    </div>
+
+    <div>
+
+        <label>Email</label>
+        <InputText @bind-Value="User.Email" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <label>Role</label><br />
+        <InputRadioGroup id="Roleid" @bind-Value="roleId" class="form-control">
+            @foreach (var item in UserService.Roles)
+            {
+                <InputRadio Value="item.Id" /> <span style="padding-left:5px;">@item.Caption</span><br />
+
+            }
+        </InputRadioGroup>
+    </div>
+
+    <div class="form-group">
+        <label>Password</label>
+        <InputText @bind-Value="User.Password" class="form-control"></InputText>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+@code {
+    public BlazorTest.Shared.Entities.User User { get; set; } = new BlazorTest.Shared.Entities.User();
+    int roleId = 1;
+    protected override async Task OnInitializedAsync()
+    {
+
+        await UserService.GetRoles();
+
+    }
+
+    public void Submited()
+    {
+        User.Role = UserService.Roles.FirstOrDefault(x => x.Id == roleId);
+        Console.WriteLine("submit ok");
+        Console.WriteLine(User.Name);
+
+        UserService.CreateUser(User);
+    }
+}

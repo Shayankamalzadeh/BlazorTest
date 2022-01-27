@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlazorTest.Shared.Entities
 {
-   public class User
+    public class User
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -16,5 +16,6 @@ namespace BlazorTest.Shared.Entities
 
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
+       
     }
 }

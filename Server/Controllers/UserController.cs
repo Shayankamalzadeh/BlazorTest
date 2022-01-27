@@ -20,10 +20,10 @@ namespace BlazorTest.Server.Controllers
             new Role{Id=2,Caption="User"}
         };
 
-        List<User> users = new List<User> {
-            new User {Id=1, Name = "Shayan", LastName = "Kamalzadeh", Email = "Shayankamalzadeh@gmail.com", Role = roles[0] } ,
-            new User {Id=2, Name = "Andrie", LastName = "xxxx", Email = "xxxx@gmail.com", Role = roles[1] },
-            new User {Id=3, Name = "Pooria", LastName = "Yyyy", Email = "YYYY@gmail.com", Role = roles[0] }
+        static List<User> users = new List<User> {
+            new User {Id=1, Name = "Shayan", LastName = "Kamalzadeh", Email = "Shayankamalzadeh@gmail.com", Role = roles[0] ,RoleId=1} ,
+            new User {Id=2, Name = "Andrie", LastName = "xxxx", Email = "xxxx@gmail.com", Role = roles[1],RoleId=2 },
+            new User {Id=3, Name = "Pooria", LastName = "Yyyy", Email = "YYYY@gmail.com", Role = roles[0],RoleId=1}
         };
         private readonly ILogger<UserController> _logger;
 
@@ -37,11 +37,26 @@ namespace BlazorTest.Server.Controllers
         {
             return Ok(users);
         }
+
+
+        [HttpGet("roles")]
+        public async Task<IActionResult> GetRoles()
+        {
+            return Ok(roles);
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> Getdetail(int id)
         {
             var user = users.FirstOrDefault(x => x.Id == id);
             return Ok(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(User user)
+        {
+            user.Id = users.Max(x => x.Id + 1);
+            users.Add(user);
+            return Ok(users);
         }
     }
 }

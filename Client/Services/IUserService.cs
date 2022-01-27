@@ -8,7 +8,13 @@ namespace BlazorTest.Client.Services
 {
     public interface IUserService
     {
-        public Task<List<User>> GetUsers();
-        public Task<User> GetUserDetail(int id);
+        event Action OnChange;
+        List<Role> Roles { get; set; }
+        List<User> Users { get; set; }
+        Task GetRoles();
+        Task<List<User>> GetUsers();
+        Task<User> GetUserDetail(int id);
+
+        Task<List<User>> CreateUser(User user);
     }
 }

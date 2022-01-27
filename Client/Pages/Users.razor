@@ -1,9 +1,10 @@
 ﻿@page "/user"
-@using BlazorTest.Shared
 @inject IUserService  UserService
 @inject NavigationManager Navigation
+@implements IDisposable
+
 <h3>User</h3>
-@if (UserList.Count == 0)
+@if (UserService.Users.Count == 0)
 {
     <span>Loading Data...</span>
 }
@@ -20,7 +21,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in UserList)
+            @foreach (var item in UserService.Users)
             {
                 <tr>
                     <td>@item.Name</td>
@@ -36,19 +37,28 @@ else
             }
         </tbody>
     </table>
+    <BlazorTest.Client.Shared.User.EditUser>
+
+    </BlazorTest.Client.Shared.User.EditUser>
 }
 
 @code {
-    List<BlazorTest.Shared.Entities.User> UserList = new List<BlazorTest.Shared.Entities.User>();
+    
     protected override async Task OnInitializedAsync()
     {
 
-        UserList = await UserService.GetUsers();
+        await UserService.GetUsers();
+        UserService.OnChange += StateHasChanged;
 
     }
     void showUser(int id)
     {
 
         Navigation.NavigateTo($"user/{id}");
+    }
+
+   public void Dispose()
+    {
+        UserService.OnChange -= StateHasChanged;
     }
 }
