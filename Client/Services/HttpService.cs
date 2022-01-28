@@ -2,25 +2,67 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BlazorTest.Client.Services
 {
     public class HttpService : IHttpService
     {
-        public Task<ResponseData<T>> Get<T>(string url)
+        private JsonSerializerOptions defaultJsonSerializerOptions =>
+            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+        private readonly HttpClient _http;
+        public HttpService(HttpClient http)
         {
-            throw new NotImplementedException();
+            _http = http;
         }
 
-        public Task<ResponseData<object>> PostAsync<T>(string url, T data)
+        public async Task<ResponseData<object>> PostAsync<T>(string url, T data)
         {
-            throw new NotImplementedException();
+            var dataSerialize = System.Text.Json.JsonSerializer.Serialize(data);
+            var content = new StringContent(dataSerialize, Encoding.UTF8, "application/json");
+            var response = await _http.PostAsync(url, content);
+
+            return new ResponseData<object>(null, response.IsSuccessStatusCode, response);
         }
 
-        public Task<ResponseData<TResponse>> PostAsync<T, TResponse>(string url, T data)
+        public async Task<ResponseData<TResponse>> PostAsync<T, TResponse>(string url, T data)
         {
-            throw new NotImplementedException();
+            var dataJson = System.Text.Json.JsonSerializer.Serialize(data);
+            var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
+            var response = await _http.PostAsync(url, stringContent);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseDeserialized = await Deserialize<TResponse>(response, defaultJsonSerializerOptions);
+                return new ResponseData<TResponse>(responseDeserialized, true, response);
+            }
+            else
+            {
+                return new ResponseData<TResponse>(default, false, response);
+            }
         }
+        private async Task<T> Deserialize<T>(HttpResponseMessage httpResponse, JsonSerializerOptions options)
+        {
+            var responseString = await httpResponse.Content.ReadAsStringAsync();
+            return System.Text.Json.JsonSerializer.Deserialize<T>(responseString, options);
+        }
+        public async Task<ResponseData<T>> GetAsync<T>(string url)
+        {
+            var responseHTTP = await _http.GetAsync(url);
+
+            if (responseHTTP.IsSuccessStatusCode)
+            {
+                var response = await Deserialize<T>(responseHTTP, defaultJsonSerializerOptions);
+                return new ResponseData<T>(response, true, responseHTTP);
+            }
+            else
+            {
+                return new ResponseData<T>(default, false, responseHTTP);
+            }
+        }
+
     }
 }
+

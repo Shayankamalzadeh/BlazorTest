@@ -10,6 +10,6 @@ namespace BlazorTest.Client.Services
     {
         Task<ResponseData<object>> PostAsync<T>(string url, T data);
         Task<ResponseData<TResponse>> PostAsync<T, TResponse>(string url, T data);
-        Task<ResponseData<T>> Get<T>(string url);
+        Task<ResponseData<T>> GetAsync<T>(string url);
     }
 }
