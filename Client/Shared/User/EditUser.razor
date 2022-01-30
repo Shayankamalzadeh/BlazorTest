@@ -2,7 +2,9 @@
 @inject IJSRuntime Jsrun
 <h3>EditUser</h3>
 
-<EditForm Model="User" OnSubmit="Submited">
+<EditForm Model="User" OnValidSubmit="Submited">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
     <div class="form-group">
         <label>First Name</label>
         <InputText @bind-Value="User.Name" class="form-control"></InputText>
@@ -56,14 +58,14 @@
         Console.WriteLine("submit ok");
         Console.WriteLine(User.Name);
 
-        if (User.Id==0)
+        if (User.Id == 0)
         {
-          await  UserService.CreateUser(User);
+            await UserService.CreateUser(User);
 
         }
         else
         {
-          await  UserService.UpdateUser(User);
+            await UserService.UpdateUser(User);
         }
 
     }

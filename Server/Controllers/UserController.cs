@@ -1,4 +1,5 @@
-﻿using BlazorTest.Shared.Entities;
+﻿using BlazorTest.Server.Services;
+using BlazorTest.Shared.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,8 @@ namespace BlazorTest.Server.Controllers
     [Route("api/users")]
     public class UserController : ControllerBase
     {
+        private readonly IUerService uerService;
+
 
         static List<Role> roles = new List<Role>
         {
@@ -27,14 +30,16 @@ namespace BlazorTest.Server.Controllers
         };
         private readonly ILogger<UserController> _logger;
 
-        public UserController(ILogger<UserController> logger)
+        public UserController(ILogger<UserController> logger, IUerService uerService)
         {
             _logger = logger;
+            this.uerService = uerService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetUser()
         {
+            var users = uerService.GetAll();
             return Ok(users);
         }
 

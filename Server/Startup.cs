@@ -1,4 +1,6 @@
+
 using BlazorTest.Server.Context;
+using BlazorTest.Server.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+
 
 namespace BlazorTest.Server
 {
@@ -27,8 +30,10 @@ namespace BlazorTest.Server
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-            //var connection = Configuration.GetConnectionString("DefaultConnection");
-            //services.AddDbContext<AppDbContext>(option => option.UseSqlServer(connection));
+            var connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<AppDbContext>(option => option.UseSqlServer(connection));
+            services.AddScoped<IUerService, UserService>();
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
