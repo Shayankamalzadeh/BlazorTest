@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace BlazorTest.Server.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/users")]
     public class UserController : ControllerBase
     {
 
@@ -21,9 +21,9 @@ namespace BlazorTest.Server.Controllers
         };
 
         static List<User> users = new List<User> {
-            new User {Id=1, Name = "Shayan", LastName = "Kamalzadeh", Email = "Shayankamalzadeh@gmail.com", Role = roles[0] ,RoleId=1} ,
-            new User {Id=2, Name = "Andrie", LastName = "xxxx", Email = "xxxx@gmail.com", Role = roles[1],RoleId=2 },
-            new User {Id=3, Name = "Pooria", LastName = "Yyyy", Email = "YYYY@gmail.com", Role = roles[0],RoleId=1}
+            new User {Id=1, Name = "Shayan", LastName = "Kamalzadeh", Email = "Shayankamalzadeh@gmail.com", Role = roles[0] ,RoleId=1 ,Password="123"} ,
+            new User {Id=2, Name = "Andrie", LastName = "xxxx", Email = "xxxx@gmail.com", Role = roles[1],RoleId=2 ,Password="123"},
+            new User {Id=3, Name = "Pooria", LastName = "Yyyy", Email = "YYYY@gmail.com", Role = roles[0],RoleId=1,Password="123"}
         };
         private readonly ILogger<UserController> _logger;
 
@@ -56,6 +56,24 @@ namespace BlazorTest.Server.Controllers
         {
             user.Id = users.Max(x => x.Id + 1);
             users.Add(user);
+            return Ok(users);
+        }
+
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateUser(User user)
+        {
+            var dbuser = users.FirstOrDefault(x => x.Id == user.Id);
+            var index = users.IndexOf(dbuser);
+            users[index] = user;
+            return Ok(users);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var dbuser = users.FirstOrDefault(x => x.Id == id);
+
+            users.Remove(dbuser);
             return Ok(users);
         }
     }

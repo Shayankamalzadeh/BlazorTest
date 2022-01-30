@@ -29,21 +29,26 @@ else
                     <td>@item.Email</td>
                     <td>@item.Role.Caption</td>
                     <td>
-                        <button class="btn btn-primary" @onclick="(()=>showUser(item.Id))">Show</button>
+                        <button class="btn btn-primary" @onclick="(()=>ShowUser(item.Id))">Show</button>
                     </td>
-
+                    <td>
+                        <button class="btn btn-primary" @onclick="(()=>EditUser(item.Id))">Edit</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="(()=>DeleteUser(item.Id))">Delete</button>
+                    </td>
                 </tr>
 
             }
         </tbody>
     </table>
-    <BlazorTest.Client.Shared.User.EditUser>
+    <BlazorTest.Client.Shared.User.EditUser User="User">
 
     </BlazorTest.Client.Shared.User.EditUser>
 }
 
 @code {
-    
+    public BlazorTest.Shared.Entities.User User = new BlazorTest.Shared.Entities.User();
     protected override async Task OnInitializedAsync()
     {
 
@@ -51,13 +56,24 @@ else
         UserService.OnChange += StateHasChanged;
 
     }
-    void showUser(int id)
+    void ShowUser(int id)
     {
 
         Navigation.NavigateTo($"user/{id}");
     }
 
-   public void Dispose()
+    void EditUser(int id)
+    {
+
+        User = UserService.Users.Find(x => x.Id == id);
+    }
+
+    void DeleteUser(int id)
+    {
+
+        UserService.DeleteUser(id);
+    }
+    public void Dispose()
     {
         UserService.OnChange -= StateHasChanged;
     }

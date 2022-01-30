@@ -16,5 +16,8 @@ namespace BlazorTest.Client.Services
         Task<User> GetUserDetail(int id);
 
         Task<List<User>> CreateUser(User user);
+        Task<List<User>> UpdateUser(User user);
+        Task<List<User>>DeleteUser(int id);
+
     }
 }

@@ -8,7 +8,7 @@ namespace BlazorTest.Shared.Entities
 {
     public class Role
     {
-        public int Id { get; set; }
+        public int Id { get; set; } = 1;
         public string Caption { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
